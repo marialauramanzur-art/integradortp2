@@ -1,0 +1,10 @@
+# Configuración de desarrollo con MongoDB embebido o Docker
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/productos_dev_db
+
+logging:
+  level:
+    root: INFO
+    com.integradortp2.api: DEBUG

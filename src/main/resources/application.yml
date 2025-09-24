@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-productos
+  
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: productos_db
+      # Para conexión con autenticación (opcional):
+      # username: usuario
+      # password: contraseña
+      # authentication-database: admin
+
+logging:
+  level:
+    com.integradortp2.api: DEBUG
+    org.springframework.data.mongodb: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
