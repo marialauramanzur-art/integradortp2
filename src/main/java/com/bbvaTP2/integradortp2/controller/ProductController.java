@@ -1,20 +1,24 @@
 package com.bbvaTP2.integradortp2.controller;
 
 import com.bbvaTP2.integradortp2.service.ProductService;
+import com.bbvaTP2.integradortp2.service.AsyncProductService;
 import com.bbvaTP2.integradortp2.web.ProductRequest;
 import com.bbvaTP2.integradortp2.web.ProductResponse;
 import com.bbvaTP2.integradortp2.domain.Product;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
+    private final AsyncProductService asyncProductService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, AsyncProductService asyncProductService) {
         this.productService = productService;
+        this.asyncProductService = asyncProductService;
     }
 
     @PostMapping
@@ -83,6 +87,11 @@ public class ProductController {
             updated.getStockMinimo(),
             updated.getStockActual()
         );
+    }
+
+    @GetMapping("/process-async")
+    public CompletableFuture<String> processAsync(@RequestParam String name) {
+        return asyncProductService.processProductAsync(name);
     }
 
     @DeleteMapping("/{id}")

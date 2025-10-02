@@ -7,14 +7,14 @@ import java.util.concurrent.Executors;
 
 @Service
 public class AsyncProductService {
-    private final ExecutorService executor = Executors.newFixedThreadPool(2);
+    private final ExecutorService executor = Executors.newFixedThreadPool(3);
 
     public CompletableFuture<String> processProductAsync(String productName) {
         return CompletableFuture.supplyAsync(() -> {
             String threadName = Thread.currentThread().getName();
             System.out.println("[INICIO] Procesando '" + productName + "' en hilo: " + threadName);
             try {
-                Thread.sleep(30000); // Simula tarea pesada
+                Thread.sleep(8000); // Simula tarea pesada
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
