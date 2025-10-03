@@ -1,20 +1,24 @@
 package com.bbvaTP2.integradortp2.controller;
 
 import com.bbvaTP2.integradortp2.service.ProductService;
+import com.bbvaTP2.integradortp2.service.AsyncProductService;
 import com.bbvaTP2.integradortp2.web.ProductRequest;
 import com.bbvaTP2.integradortp2.web.ProductResponse;
 import com.bbvaTP2.integradortp2.domain.Product;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
+    private final AsyncProductService asyncProductService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, AsyncProductService asyncProductService) {
         this.productService = productService;
+        this.asyncProductService = asyncProductService;
     }
 
     @PostMapping
@@ -85,6 +89,11 @@ public class ProductController {
         );
     }
 
+    @GetMapping("/process-async")
+    public CompletableFuture<String> processAsync(@RequestParam String name) {
+        return asyncProductService.processProductAsync(name);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable String id) {
         productService.deleteProduct(id);
@@ -93,5 +102,11 @@ public class ProductController {
     @DeleteMapping("/all")
     public void deleteAllProducts() {
         productService.deleteAllProducts();
+    }
+
+    @GetMapping("/test-parallel")
+    public String testParallel() {
+        productService.testParallelOperations();
+        return "Operaciones paralelas ejecutadas. Ver consola del servidor.";
     }
 }
